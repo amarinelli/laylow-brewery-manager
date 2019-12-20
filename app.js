@@ -110,7 +110,3 @@ app.post("/action", function (req, res) {
         listBrewsOpenModal();
     }
 });
-
-;
-
-;
