@@ -1,0 +1,35 @@
+{
+    "type": "home",
+    "callback_id": "brewery-manager-app-home",
+    "blocks": [
+        {
+            "type": "actions",
+            "block_id": "get-started-home-action",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Get Started",
+                        "emoji": true
+                    },
+                    "value": "get-started-home-button"
+                }
+            ]
+        },
+        {
+            "type": "image",
+            "image_url": "https://laylow.beer/img/laylow-brewery.jpg",
+            "alt_text": "Laylow Brewery logo"
+        },
+        {
+            "type": "context",
+            "elements": [
+                {
+                    "type": "mrkdwn",
+                    "text": "Last updated Dec 19, 2019"
+                }
+            ]
+        }
+    ]
+}
