@@ -4,16 +4,25 @@
     "blocks": [
         {
             "type": "actions",
-            "block_id": "get-started-home-action",
+            "block_id": "app-home-action-buttons",
             "elements": [
                 {
                     "type": "button",
                     "text": {
                         "type": "plain_text",
-                        "text": "Get Started",
+                        "text": "Recent brews",
                         "emoji": true
                     },
-                    "value": "get-started-home-button"
+                    "value": "recent-brews-home-button"
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Tap lineup",
+                        "emoji": true
+                    },
+                    "value": "tap-lineup-home-button"
                 }
             ]
         },
@@ -27,7 +36,22 @@
             "elements": [
                 {
                     "type": "mrkdwn",
-                    "text": "Last updated Dec 19, 2019"
+                    "text": ""
+                }
+            ]
+        },
+        {
+            "type": "actions",
+            "block_id": "app-home-refresh-button",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Refresh",
+                        "emoji": true
+                    },
+                    "value": "refresh-app-home-button"
                 }
             ]
         }

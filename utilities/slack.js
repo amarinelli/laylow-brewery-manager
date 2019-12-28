@@ -6,9 +6,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const botToken = process.env.BOT_TOKEN;
 
-// Slack app home default view
-let appHomeView = JSON.parse(fs.readFileSync('./blocks/appHome.json'));
-
 function openModal(trigger_id, view) {
 
     console.log("\nOpening Modal");
@@ -33,4 +30,28 @@ function openModal(trigger_id, view) {
         });
 }
 
-module.exports = { openModal };
+function updateAppHome(user_id, view) {
+
+    console.log("\nUpdating App Home");
+
+    axios.post("https://slack.com/api/views.publish", {
+        user_id, user_id,
+        view: view
+    }, {
+        headers: {
+            "Authorization": `Bearer ${botToken}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }
+    })
+        .then(response => {
+            console.log(response.data);
+            console.log("\nApp Home Updated");
+            return response.data;
+        })
+        .catch(error => {
+            console.log(error.response);
+            return error.response;
+        });
+}
+
+module.exports = { openModal, updateAppHome };
