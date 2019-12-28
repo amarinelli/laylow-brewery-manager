@@ -32,4 +32,30 @@ function listBrews(maxRecords) {
     });
 }
 
-module.exports = { listBrews };
+function listTaps() {
+
+    console.log("\nListing Taps");
+
+    return new Promise(resolve => {
+        let config = {
+            headers: { 'Authorization': `Bearer ${airtableToken}` },
+            params: {
+                "maxRecords": 10,
+                "view": "On Tap"
+            }
+        };
+
+        axios.get(`https://api.airtable.com/v0/${airtableBase}/Taps`, config)
+            .then(function (response) {
+                // handle success
+                console.log(response.data);
+                resolve(response.data);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error.response.status, error.response.statusText);
+            });
+    });
+}
+
+module.exports = { listBrews, listTaps };
