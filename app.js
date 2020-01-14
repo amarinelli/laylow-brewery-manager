@@ -122,7 +122,7 @@ app.post("/action", function (req, res) {
             const taps = await listTaps();
 
             // Load template modal view
-            let listBrewsBlocks = JSON.parse(fs.readFileSync("./blocks/listBrews.json"));
+            let listBrewsBlocks = JSON.parse(fs.readFileSync("./blocks/listTaps.json"));
 
             // Populate modal template with data from airtable
 
