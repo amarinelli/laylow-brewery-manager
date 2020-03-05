@@ -20,7 +20,6 @@ function openModal(trigger_id, view) {
         }
     })
         .then(response => {
-            console.log(response.data);
             console.log("\nModal Open");
             return response.data;
         })
@@ -44,7 +43,6 @@ function updateAppHome(user_id, view) {
         }
     })
         .then(response => {
-            console.log(response.data);
             console.log("\nApp Home Updated");
             return response.data;
         })

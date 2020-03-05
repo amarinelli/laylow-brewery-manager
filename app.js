@@ -26,7 +26,7 @@ const port = process.env.PORT || 8080;
 
 // Start express server
 app.listen(port, function () {
-    console.log(`\nLaylow brewery manager running ...`);
+    console.log(`\nLaylow brewery manager is running ...`);
 });
 
 // This route handles GET requests for the root
@@ -74,7 +74,6 @@ app.post("/action", function (req, res) {
     let action = JSON.parse(req.body.payload);
 
     // Log the request payload
-    console.log(action);
 
     // The "Recent brews" button was clicked on the App Home View
     if (action.actions[0].value == "recent-brews-home-button") {

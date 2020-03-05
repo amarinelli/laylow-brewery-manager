@@ -22,7 +22,6 @@ function listBrews(maxRecords) {
         axios.get(`https://api.airtable.com/v0/${airtableBase}/Brew`, config)
             .then(function (response) {
                 // handle success
-                console.log(response.data);
                 resolve(response.data);
             })
             .catch(function (error) {
@@ -48,7 +47,6 @@ function listTaps() {
         axios.get(`https://api.airtable.com/v0/${airtableBase}/Taps`, config)
             .then(function (response) {
                 // handle success
-                console.log(response.data);
                 resolve(response.data);
             })
             .catch(function (error) {
