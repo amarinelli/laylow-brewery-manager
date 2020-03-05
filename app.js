@@ -31,7 +31,7 @@ app.listen(port, function () {
 
 // This route handles GET requests for the root
 app.get("/", function (req, res) {
-    res.send("👋");
+    res.send("🍺");
 });
 
 // This route handles POST requests for Slack events
