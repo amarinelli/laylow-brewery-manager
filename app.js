@@ -128,23 +128,28 @@ app.post("/action", function (req, res) {
 
             listBrewsBlocks.title.text = "Tap Lineup";
 
-            listBrewsBlocks.blocks[0].text.text = `:one: *${taps.records[0].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[1].elements[0].text = `Tapped on ${taps.records[0].fields["Tapped Date"]}`;
+            taps.records.forEach((tap, num) => {
 
-            listBrewsBlocks.blocks[2].text.text = `:two: *${taps.records[1].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[3].elements[0].text = `Tapped on ${taps.records[1].fields["Tapped Date"]}`;
+                listBrewsBlocks.blocks.push(
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": `\`${num + 1}.\` *${tap.fields["Brew Code"]}*`
+                        }
+                    },
+                    {
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "mrkdwn",
+                                "text": `Tapped on ${tap.fields["Tapped Date"]}`
+                            }
+                        ]
+                    }
+                )
 
-            listBrewsBlocks.blocks[4].text.text = `:three: *${taps.records[2].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[5].elements[0].text = `Tapped on ${taps.records[2].fields["Tapped Date"]}`;
-
-            listBrewsBlocks.blocks[6].text.text = `:four: *${taps.records[3].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[7].elements[0].text = `Tapped on ${taps.records[3].fields["Tapped Date"]}`;
-
-            listBrewsBlocks.blocks[8].text.text = `:five: *${taps.records[4].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[9].elements[0].text = `Tapped on ${taps.records[4].fields["Tapped Date"]}`;
-
-            listBrewsBlocks.blocks[10].text.text = `:six: *${taps.records[5].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[11].elements[0].text = `Tapped on ${taps.records[5].fields["Tapped Date"]}`;
+            });
 
             // Open modal in Slack
             const modal = openModal(trigger_id = action.trigger_id, view = listBrewsBlocks);
