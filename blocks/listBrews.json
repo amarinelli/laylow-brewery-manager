@@ -4,7 +4,7 @@
     "notify_on_close": false,
     "title": {
         "type": "plain_text",
-        "text": "Past 6 brews",
+        "text": "",
         "emoji": true
     },
     "close": {
