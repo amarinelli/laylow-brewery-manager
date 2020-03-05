@@ -12,7 +12,6 @@ const { listTaps } = require("./utilities/airtable.js");
 
 // Load env variables
 dotenv.config();
-const appId = process.env.APP_ID;
 
 var app = express();
 
@@ -27,7 +26,7 @@ const port = process.env.PORT || 8080;
 
 // Start express server
 app.listen(port, function () {
-    console.log(`\nApp ${appId} listening on port: ${port} ...`);
+    console.log(`\nLaylow brewery manager running ...`);
 });
 
 // This route handles GET requests for the root
