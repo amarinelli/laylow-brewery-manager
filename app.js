@@ -173,3 +173,8 @@ app.post("/action", function (req, res) {
 
     }
 });
+
+// This route handles GET requests for all other routes
+app.get("*", function (req, res) {
+    res.send("🍺");
+});
