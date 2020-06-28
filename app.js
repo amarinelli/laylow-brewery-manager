@@ -26,7 +26,7 @@ const port = process.env.PORT || 8080;
 
 // Start express server
 app.listen(port, function () {
-    console.log(`\nLaylow brewery manager is running ...`);
+    console.log(`\nLaylow Brewery Manager is running ...`);
 });
 
 // This route handles GET requests for the root
@@ -172,6 +172,20 @@ app.post("/action", function (req, res) {
         updateAppHome(action.user.id, AppHomeView);
 
     }
+});
+
+// This route handles POST requests for Slack slash commands
+app.post("/debug", function (req, res) {
+
+    console.log("\nNew slash command");
+
+    // Parse the payload
+    console.log(req.body)
+
+    res.send({
+        "response_type": "ephemeral",
+        "text": "Completed"
+    })
 });
 
 // This route handles GET requests for all other routes
