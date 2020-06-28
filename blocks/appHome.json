@@ -3,55 +3,63 @@
     "callback_id": "brewery-manager-app-home",
     "blocks": [
         {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": ":beer: *BOTTLE SHOP*"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": ""
+            },
+            "accessory": {
+                "type": "button",
+                "action_id": "refresh-button",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":zap: Refresh",
+                    "emoji": true
+                }
+            }
+        },
+        {
+            "type": "section",
+            "fields": []
+        },
+        {
+            "type": "divider"
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": ":beers: *BREWERY*"
+            }
+        },
+        {
             "type": "actions",
             "block_id": "app-home-action-buttons",
             "elements": [
                 {
                     "type": "button",
+                    "action_id": "recent-brews-home-button",
                     "text": {
                         "type": "plain_text",
                         "text": "Recent brews",
                         "emoji": true
-                    },
-                    "value": "recent-brews-home-button"
+                    }
                 },
                 {
                     "type": "button",
+                    "action_id": "tap-lineup-home-button",
                     "text": {
                         "type": "plain_text",
                         "text": "Tap lineup",
                         "emoji": true
-                    },
-                    "value": "tap-lineup-home-button"
-                }
-            ]
-        },
-        {
-            "type": "image",
-            "image_url": "https://laylow.beer/img/laylow-brewery.png",
-            "alt_text": "Laylow Brewery logo"
-        },
-        {
-            "type": "context",
-            "elements": [
-                {
-                    "type": "mrkdwn",
-                    "text": ""
-                }
-            ]
-        },
-        {
-            "type": "actions",
-            "block_id": "app-home-refresh-button",
-            "elements": [
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Refresh",
-                        "emoji": true
-                    },
-                    "value": "refresh-app-home-button"
+                    }
                 }
             ]
         }
