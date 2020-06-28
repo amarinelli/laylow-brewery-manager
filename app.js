@@ -163,9 +163,9 @@ app.post("/action", function (req, res) {
         // Load template app home view
         let AppHomeView = JSON.parse(fs.readFileSync("./blocks/appHome.json"));
 
-        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let current_datetime = new Date()
-        let formatted_date = `${months[current_datetime.getMonth()]} ${current_datetime.getDate()}, ${current_datetime.getFullYear()} _(${current_datetime.getSeconds()})_`;
+        let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
         AppHomeView.blocks[1].text.text = `Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*`
 
@@ -180,7 +180,23 @@ app.post("/debug", function (req, res) {
     console.log("\nNew slash command");
 
     // Parse the payload
-    console.log(req.body)
+    // console.log(req.body);
+
+    // Load template app home view
+    let AppHomeView = JSON.parse(fs.readFileSync("./blocks/appHome.json"));
+
+    let current_datetime = new Date()
+    let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    let formatted_date = current_datetime.toLocaleString('en-CA', options);
+
+    AppHomeView.blocks[1].text.text = `Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*`
+
+    const userIds = process.env.IDS;
+    let users = userIds.split(",");
+
+    users.forEach((user) => {
+        updateAppHome(user, AppHomeView);
+    })
 
     res.send({
         "response_type": "ephemeral",

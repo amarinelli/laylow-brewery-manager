@@ -43,7 +43,7 @@ function updateAppHome(user_id, view) {
         }
     })
         .then(response => {
-            console.log("\nApp Home Updated");
+            console.log(`App Home Updated for ${user_id}`);
             return response.data;
         })
         .catch(error => {
