@@ -13,11 +13,11 @@
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": ""
+                "text": "_Click Refresh button to update inventory_"
             },
             "accessory": {
                 "type": "button",
-                "action_id": "refresh-button",
+                "action_id": "refresh-bottle-inventory-button",
                 "text": {
                     "type": "plain_text",
                     "text": ":zap: Refresh",
@@ -27,7 +27,12 @@
         },
         {
             "type": "section",
-            "fields": []
+            "fields": [
+                {
+                    "type": "mrkdwn",
+                    "text": "_*Click Refresh button to update inventory*_"
+                }
+            ]
         },
         {
             "type": "divider"

@@ -76,7 +76,7 @@ app.post("/action", function (req, res) {
     // Log the request payload
 
     // The "Recent brews" button was clicked on the App Home View
-    if (action.actions[0].value == "recent-brews-home-button") {
+    if (action.actions[0].action_id == "recent-brews-home-button") {
 
         async function listBrewsOpenModal() {
             const brews = await listBrews(maxRecords = 6);
@@ -114,7 +114,7 @@ app.post("/action", function (req, res) {
     }
 
     // The "Tap lineup" button was clicked on the App Home View
-    else if ((action.actions[0].value == "tap-lineup-home-button")) {
+    else if ((action.actions[0].action_id == "tap-lineup-home-button")) {
 
         async function listTapsOpenModal() {
             const taps = await listTaps();
@@ -158,7 +158,7 @@ app.post("/action", function (req, res) {
     }
 
     // The "Refresh" button was clicked on the App Home View
-    else if ((action.actions[0].value == "refresh-app-home-button")) {
+    else if ((action.actions[0].action_id == "refresh-bottle-inventory-button")) {
 
         // Load template app home view
         let AppHomeView = JSON.parse(fs.readFileSync("./blocks/appHome.json"));
@@ -167,7 +167,7 @@ app.post("/action", function (req, res) {
         let current_datetime = new Date()
         let formatted_date = `${months[current_datetime.getMonth()]} ${current_datetime.getDate()}, ${current_datetime.getFullYear()} _(${current_datetime.getSeconds()})_`;
 
-        AppHomeView.blocks[2].elements[0].text = `Last updated from <https://airtable.com/appzMWP1r5wVF6uVJ|Airtable brewing data> on ${formatted_date}`
+        AppHomeView.blocks[1].text.text = `Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*`
 
         updateAppHome(action.user.id, AppHomeView);
 
