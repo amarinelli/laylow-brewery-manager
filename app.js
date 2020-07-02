@@ -10,8 +10,11 @@ const { updateAppHome } = require("./utilities/slack.js");
 const { listBrews } = require("./utilities/airtable.js");
 const { listTaps } = require("./utilities/airtable.js");
 
+const { listBottles } = require("./utilities/square.js");
+
 // Load env variables
 dotenv.config();
+const bottleVariations = process.env.BOTTLES;
 
 var app = express();
 
@@ -26,7 +29,7 @@ const port = process.env.PORT || 8080;
 
 // Start express server
 app.listen(port, function () {
-    console.log(`\nLaylow brewery manager is running ...`);
+    console.log(`\nLaylow Brewery Manager is running ...`);
 });
 
 // This route handles GET requests for the root
@@ -76,7 +79,7 @@ app.post("/action", function (req, res) {
     // Log the request payload
 
     // The "Recent brews" button was clicked on the App Home View
-    if (action.actions[0].value == "recent-brews-home-button") {
+    if (action.actions[0].action_id == "recent-brews-home-button") {
 
         async function listBrewsOpenModal() {
             const brews = await listBrews(maxRecords = 6);
@@ -114,7 +117,7 @@ app.post("/action", function (req, res) {
     }
 
     // The "Tap lineup" button was clicked on the App Home View
-    else if ((action.actions[0].value == "tap-lineup-home-button")) {
+    else if ((action.actions[0].action_id == "tap-lineup-home-button")) {
 
         async function listTapsOpenModal() {
             const taps = await listTaps();
@@ -158,20 +161,65 @@ app.post("/action", function (req, res) {
     }
 
     // The "Refresh" button was clicked on the App Home View
-    else if ((action.actions[0].value == "refresh-app-home-button")) {
+    else if ((action.actions[0].action_id == "refresh-bottle-inventory-button")) {
 
         // Load template app home view
         let AppHomeView = JSON.parse(fs.readFileSync("./blocks/appHome.json"));
 
-        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let current_datetime = new Date()
-        let formatted_date = `${months[current_datetime.getMonth()]} ${current_datetime.getDate()}, ${current_datetime.getFullYear()} _(${current_datetime.getSeconds()})_`;
+        let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
-        AppHomeView.blocks[2].elements[0].text = `Last updated from <https://airtable.com/appzMWP1r5wVF6uVJ|Airtable brewing data> on ${formatted_date}`
+        AppHomeView.blocks[1].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*_`
 
-        updateAppHome(action.user.id, AppHomeView);
+        async function listSquareBottleInventory() {
+            const bottleInventoryList = await listBottles();
+
+            bottles = JSON.parse(bottleVariations);
+
+            bottleInventoryList.counts.forEach(item => {
+                AppHomeView.blocks[2].fields.push({
+                    "type": "mrkdwn",
+                    "text": `*${bottles[item.catalog_object_id]}*: ${item.quantity}`
+                })
+            });
+
+            updateAppHome(action.user.id, AppHomeView);
+        };
+
+        listSquareBottleInventory();
 
     }
+});
+
+// This route handles POST requests for Slack slash commands
+app.post("/debug", function (req, res) {
+
+    console.log("\nNew slash command");
+
+    // Parse the payload
+    // console.log(req.body);
+
+    // Load template app home view
+    let AppHomeView = JSON.parse(fs.readFileSync("./blocks/appHome.json"));
+
+    let current_datetime = new Date()
+    let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    let formatted_date = current_datetime.toLocaleString('en-CA', options);
+
+    AppHomeView.blocks[1].text.text = `Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*`
+
+    const userIds = process.env.IDS;
+    let users = userIds.split(",");
+
+    users.forEach((user) => {
+        updateAppHome(user, AppHomeView);
+    })
+
+    res.send({
+        "response_type": "ephemeral",
+        "text": "Completed"
+    })
 });
 
 // This route handles GET requests for all other routes
