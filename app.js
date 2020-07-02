@@ -207,7 +207,12 @@ app.post("/debug", function (req, res) {
     let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
     let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
-    AppHomeView.blocks[1].text.text = `Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*`
+    AppHomeView.blocks[1].text.text = `Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*`;
+
+    AppHomeView.blocks[2].fields.push({
+        "type": "mrkdwn",
+        "text": "_Click Refresh button to update inventory_"
+    })
 
     const userIds = process.env.IDS;
     let users = userIds.split(",");
