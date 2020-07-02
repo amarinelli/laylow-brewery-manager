@@ -27,12 +27,7 @@
         },
         {
             "type": "section",
-            "fields": [
-                {
-                    "type": "mrkdwn",
-                    "text": "_*Click Refresh button to update inventory*_"
-                }
-            ]
+            "fields": []
         },
         {
             "type": "divider"

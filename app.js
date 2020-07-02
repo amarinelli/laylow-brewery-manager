@@ -10,8 +10,11 @@ const { updateAppHome } = require("./utilities/slack.js");
 const { listBrews } = require("./utilities/airtable.js");
 const { listTaps } = require("./utilities/airtable.js");
 
+const { listBottles } = require("./utilities/square.js");
+
 // Load env variables
 dotenv.config();
+const bottleVariations = process.env.BOTTLES;
 
 var app = express();
 
@@ -167,9 +170,24 @@ app.post("/action", function (req, res) {
         let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
-        AppHomeView.blocks[1].text.text = `Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*`
+        AppHomeView.blocks[1].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*_`
 
-        updateAppHome(action.user.id, AppHomeView);
+        async function listSquareBottleInventory() {
+            const bottleInventoryList = await listBottles();
+
+            bottles = JSON.parse(bottleVariations);
+
+            bottleInventoryList.counts.forEach(item => {
+                AppHomeView.blocks[2].fields.push({
+                    "type": "mrkdwn",
+                    "text": `*${bottles[item.catalog_object_id]}*: ${item.quantity}`
+                })
+            });
+
+            updateAppHome(action.user.id, AppHomeView);
+        };
+
+        listSquareBottleInventory();
 
     }
 });
