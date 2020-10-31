@@ -51,15 +51,6 @@
                         "text": "Recent brews",
                         "emoji": true
                     }
-                },
-                {
-                    "type": "button",
-                    "action_id": "tap-lineup-home-button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Tap lineup",
-                        "emoji": true
-                    }
                 }
             ]
         }
