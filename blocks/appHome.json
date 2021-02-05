@@ -29,7 +29,7 @@
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": ""
+                "text": "d"
             }
         },
         {
@@ -44,7 +44,31 @@
         },
         {
             "type": "section",
-            "fields": []
+            "fields": [
+                {
+                    "type": "mrkdwn",
+                    "text": "_placeholder_"
+                }
+            ]
+        },
+        {
+            "type": "divider"
+        },
+        {
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": "Merch"
+            }
+        },
+        {
+            "type": "section",
+            "fields": [
+                {
+                    "type": "mrkdwn",
+                    "text": "_placeholder_"
+                }
+            ]
         },
         {
             "type": "divider"
@@ -55,6 +79,15 @@
                 "type": "plain_text",
                 "text": "Brewery"
             }
+        },
+        {
+            "type": "section",
+            "fields": [
+                {
+                    "type": "mrkdwn",
+                    "text": "_placeholder_"
+                }
+            ]
         }
     ]
 }

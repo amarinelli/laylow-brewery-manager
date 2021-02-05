@@ -1,5 +1,4 @@
 const axios = require('axios');
-const fs = require('fs');
 const dotenv = require('dotenv');
 
 // Load env variables
@@ -31,25 +30,28 @@ function openModal(trigger_id, view) {
 
 function updateAppHome(user_id, view) {
 
-    console.log("\nUpdating App Home");
+    return new Promise(resolve => {
 
-    axios.post("https://slack.com/api/views.publish", {
-        user_id, user_id,
-        view: view
-    }, {
-        headers: {
-            "Authorization": `Bearer ${botToken}`,
-            "Content-Type": "application/json; charset=utf-8"
-        }
-    })
-        .then(response => {
-            console.log(`App Home Updated for ${user_id}`);
-            return response.data;
+        console.log("\nUpdating App Home");
+
+        axios.post("https://slack.com/api/views.publish", {
+            user_id, user_id,
+            view: view
+        }, {
+            headers: {
+                "Authorization": `Bearer ${botToken}`,
+                "Content-Type": "application/json; charset=utf-8"
+            }
         })
-        .catch(error => {
-            console.log(error.response);
-            return error.response;
-        });
+            .then(response => {
+                console.log(`App Home Updated for ${user_id}`);
+                resolve(response.data);
+            })
+            .catch(error => {
+                console.log(error.response);
+                resolve(error.response);
+            });
+    });
 }
 
 module.exports = { openModal, updateAppHome };

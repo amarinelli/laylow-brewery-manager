@@ -196,7 +196,7 @@ app.post("/action", function (req, res) {
 // This route handles POST requests for Slack slash commands
 app.post("/debug", function (req, res) {
 
-    console.log("\nNew slash command");
+    console.log("\nRun debug slash command");
 
     // Parse the payload
     // console.log(req.body);
@@ -208,23 +208,18 @@ app.post("/debug", function (req, res) {
     let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
     let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
-    AppHomeView.blocks[1].text.text = `Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*`;
-
-    AppHomeView.blocks[2].fields.push({
-        "type": "mrkdwn",
-        "text": "_Click Refresh button to update inventory_"
-    })
+    AppHomeView.blocks[3].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> & <https://airtable.com/${airtableBase}|Airtable> on *${formatted_date}*_`
 
     const userIds = process.env.IDS;
     let users = userIds.split(",");
 
     users.forEach((user) => {
         updateAppHome(user, AppHomeView);
-    })
+    });
 
     res.send({
         "response_type": "ephemeral",
-        "text": "Completed"
+        "text": "Completed! _check app home_"
     })
 });
 
