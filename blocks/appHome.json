@@ -51,12 +51,7 @@
         },
         {
             "type": "section",
-            "fields": [
-                {
-                    "type": "mrkdwn",
-                    "text": "_placeholder_"
-                }
-            ]
+            "fields": []
         },
         {
             "type": "divider"

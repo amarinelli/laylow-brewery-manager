@@ -6,11 +6,12 @@ const fs = require("fs");
 
 const { updateAppHome } = require("./utilities/slack.js");
 const { listBrews } = require("./utilities/airtable.js");
-const { listBottles } = require("./utilities/square.js");
+const { listInventory } = require("./utilities/square.js");
 
 // Load env variables
 dotenv.config();
 const bottleVariations = process.env.BOTTLES;
+const merchVariations = process.env.MERCH;
 const airtableBase = process.env.AIRTABLE_BASE;
 
 var app = express();
@@ -93,7 +94,7 @@ app.post("/action", function (req, res) {
             // BOTTLE SHOP
             //
 
-            const bottleInventoryList = await listBottles();
+            const bottleInventoryList = await listInventory(bottleVariations);
 
             bottles = JSON.parse(bottleVariations);
 
@@ -107,6 +108,19 @@ app.post("/action", function (req, res) {
             //
             // MERCH
             //
+
+            const merchInventoryList = await listInventory(merchVariations);
+
+            merch = JSON.parse(merchVariations);
+
+            merchInventoryList.counts.forEach(item => {
+                if (item.state == "IN_STOCK") {
+                    AppHomeView.blocks[8].fields.push({
+                        "type": "mrkdwn",
+                        "text": `*${merch[item.catalog_object_id]}*: ${item.quantity}`
+                    })
+                }
+            });
 
             //
             // RECENT BREWS
@@ -125,7 +139,7 @@ app.post("/action", function (req, res) {
             // PUBLISH
             //
 
-            updateAppHome(action.user.id, AppHomeView);
+            console.log(await updateAppHome(action.user.id, AppHomeView));
         };
 
         gatherData();

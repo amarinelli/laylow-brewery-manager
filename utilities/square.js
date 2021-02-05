@@ -4,22 +4,19 @@ const dotenv = require('dotenv');
 // Load env variables
 dotenv.config();
 const squareToken = process.env.SQUARE_TOKEN;
-const bottleVariations = process.env.BOTTLES;
 
-function listBottles() {
+function listInventory(type) {
 
-    // console.log("\nListing Bottles");
-
-    bottles = JSON.parse(bottleVariations);
+    // console.log("\nListing Inventory");
 
     return new Promise(resolve => {
 
         axios.post("https://connect.squareup.com/v2/inventory/batch-retrieve-counts", {
-            "catalog_object_ids": Object.keys(bottles)
+            "catalog_object_ids": Object.keys(JSON.parse(type))
         }, {
             headers: {
                 "Authorization": `Bearer ${squareToken}`,
-                "Square-Version": "2020-06-25",
+                "Square-Version": "2021-01-21",
                 "Content-Type": "application/json"
             }
         })
@@ -34,4 +31,4 @@ function listBottles() {
     });
 }
 
-module.exports = { listBottles };
+module.exports = { listInventory };
