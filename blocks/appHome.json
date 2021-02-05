@@ -3,26 +3,36 @@
     "callback_id": "brewery-manager-app-home",
     "blocks": [
         {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": ":beer: *BOTTLE SHOP*"
-            }
+            "type": "actions",
+            "elements": [
+                {
+                    "type": "button",
+                    "action_id": "refresh-bottle-inventory-button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": ":zap: Refresh"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "divider"
         },
         {
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": "_Click Refresh button to update inventory_"
-            },
-            "accessory": {
-                "type": "button",
-                "action_id": "refresh-bottle-inventory-button",
-                "text": {
-                    "type": "plain_text",
-                    "text": ":zap: Refresh",
-                    "emoji": true
-                }
+                "text": ""
+            }
+        },
+        {
+            "type": "divider"
+        },
+        {
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": "Bottle shop"
             }
         },
         {
@@ -33,26 +43,34 @@
             "type": "divider"
         },
         {
-            "type": "section",
+            "type": "header",
             "text": {
-                "type": "mrkdwn",
-                "text": ":beers: *BREWERY*"
+                "type": "plain_text",
+                "text": "Merch"
             }
         },
         {
-            "type": "actions",
-            "block_id": "app-home-action-buttons",
-            "elements": [
+            "type": "section",
+            "fields": [
                 {
-                    "type": "button",
-                    "action_id": "recent-brews-home-button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Recent brews",
-                        "emoji": true
-                    }
+                    "type": "mrkdwn",
+                    "text": "_placeholder_"
                 }
             ]
+        },
+        {
+            "type": "divider"
+        },
+        {
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": "Brewery"
+            }
+        },
+        {
+            "type": "section",
+            "fields": []
         }
     ]
 }
