@@ -15,6 +15,7 @@ const { listBottles } = require("./utilities/square.js");
 // Load env variables
 dotenv.config();
 const bottleVariations = process.env.BOTTLES;
+const airtableBase = process.env.AIRTABLE_BASE;
 
 var app = express();
 
@@ -170,7 +171,7 @@ app.post("/action", function (req, res) {
         let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
-        AppHomeView.blocks[1].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> on *${formatted_date}*_`
+        AppHomeView.blocks[3].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> & <https://airtable.com/${airtableBase}|Airtable> on *${formatted_date}*_`
 
         async function listSquareBottleInventory() {
             const bottleInventoryList = await listBottles();
@@ -178,7 +179,7 @@ app.post("/action", function (req, res) {
             bottles = JSON.parse(bottleVariations);
 
             bottleInventoryList.counts.forEach(item => {
-                AppHomeView.blocks[2].fields.push({
+                AppHomeView.blocks[6].fields.push({
                     "type": "mrkdwn",
                     "text": `*${bottles[item.catalog_object_id]}*: ${item.quantity}`
                 })
