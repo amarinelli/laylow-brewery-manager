@@ -21,7 +21,7 @@ function updateAppHome(user_id, view) {
             }
         })
         .then(response => {
-            console.log(`App Home Updated for ${user_id}`);
+            // console.log(`App Home Updated for ${user_id}`);
             resolve(response.data);
         })
         .catch(error => {
