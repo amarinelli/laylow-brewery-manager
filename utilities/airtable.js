@@ -8,7 +8,7 @@ const airtableBase = process.env.AIRTABLE_BASE;
 
 function listBrews(maxRecords) {
 
-    console.log("\nListing Brews");
+    // console.log("\nListing Brews");
 
     return new Promise(resolve => {
         let config = {

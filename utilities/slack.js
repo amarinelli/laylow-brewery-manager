@@ -9,7 +9,7 @@ function updateAppHome(user_id, view) {
 
     return new Promise(resolve => {
 
-        console.log("\nUpdating App Home");
+        // console.log("\nUpdating App Home");
 
         axios.post("https://slack.com/api/views.publish", {
             user_id, user_id,

@@ -8,7 +8,8 @@ const bottleVariations = process.env.BOTTLES;
 
 function listBottles() {
 
-    console.log("\nListing Bottles");
+    // console.log("\nListing Bottles");
+
     bottles = JSON.parse(bottleVariations);
 
     return new Promise(resolve => {

@@ -26,7 +26,7 @@ const port = process.env.PORT || 8080;
 
 // Start express server
 app.listen(port, function () {
-    console.log(`\nLaylow Brewery Manager is running ...`);
+    // console.log(`\nLaylow Brewery Manager is running ...`);
 });
 
 // This route handles GET requests for the root
@@ -42,21 +42,21 @@ app.post("/events", function (req, res) {
         res.send({
             "challenge": req.body.challenge
         });
-        console.log("Challenge sent");
+        // console.log("Challenge sent");
     } else {
 
         // Respond to Events API with 200 OK
         res.sendStatus(200);
 
-        console.log("\nNew event");
+        // console.log("\nNew event");
 
         // Print the Event API Request body
-        console.log(JSON.stringify(req.body, null, 4));
+        // console.log(JSON.stringify(req.body, null, 4));
 
         let event = req.body.event;
 
         if (event.type == "app_home_opened") {
-            console.log("App Home Opened");
+            // console.log("App Home Opened");
         }
 
     }
@@ -65,7 +65,7 @@ app.post("/events", function (req, res) {
 // This route handles POST requests for Slack interactions
 app.post("/action", function (req, res) {
 
-    console.log("\nNew interaction");
+    // console.log("\nNew interaction");
 
     // Respond to Slack with 200 OK
     res.sendStatus(200);
@@ -125,7 +125,7 @@ app.post("/action", function (req, res) {
             // PUBLISH
             //
 
-            console.log(await updateAppHome(action.user.id, AppHomeView));
+            updateAppHome(action.user.id, AppHomeView);
         };
 
         gatherData();
@@ -138,7 +138,7 @@ app.post("/action", function (req, res) {
 // This route handles POST requests for Slack slash commands
 app.post("/debug", function (req, res) {
 
-    console.log("\nRun debug slash command");
+    // console.log("\nRun debug slash command");
 
     // Parse the payload
     // console.log(req.body);
