@@ -16,13 +16,6 @@
             ]
         },
         {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "_Click Refresh to update this view_"
-            }
-        },
-        {
             "type": "divider"
         },
         {

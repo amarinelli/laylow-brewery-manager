@@ -85,7 +85,7 @@ app.post("/action", function (req, res) {
         let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
-        AppHomeView.blocks[3].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> & <https://airtable.com/${airtableBase}|Airtable> on *${formatted_date}*_`
+        AppHomeView.blocks[2].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> & <https://airtable.com/${airtableBase}|Airtable> on *${formatted_date}*_`
         
         async function gatherData() {
 
@@ -98,7 +98,7 @@ app.post("/action", function (req, res) {
             bottles = JSON.parse(bottleVariations);
 
             bottleInventoryList.counts.forEach(item => {
-                AppHomeView.blocks[6].fields.push({
+                AppHomeView.blocks[5].fields.push({
                     "type": "mrkdwn",
                     "text": `*${bottles[item.catalog_object_id]}*: ${item.quantity}`
                 })
@@ -115,7 +115,7 @@ app.post("/action", function (req, res) {
             const brews = await listBrews(maxRecords = 6);
 
             brews.records.forEach(brew => {
-                AppHomeView.blocks[12].fields.push({
+                AppHomeView.blocks[11].fields.push({
                     "type": "mrkdwn",
                     "text": `*<${brew.fields["Brewing Record"]}|${brew.fields["Brew Code"]}>* _(brewed on ${new Date(brew.fields["Brew Date"]).toLocaleString('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric' })})_`
                 })
