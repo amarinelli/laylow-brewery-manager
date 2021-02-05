@@ -4,12 +4,8 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const fs = require("fs");
 
-const { openModal } = require("./utilities/slack.js");
 const { updateAppHome } = require("./utilities/slack.js");
-
 const { listBrews } = require("./utilities/airtable.js");
-const { listTaps } = require("./utilities/airtable.js");
-
 const { listBottles } = require("./utilities/square.js");
 
 // Load env variables
@@ -79,57 +75,24 @@ app.post("/action", function (req, res) {
 
     // Log the request payload
 
-    // The "Recent brews" button was clicked on the App Home View
-    if (action.actions[0].action_id == "recent-brews-home-button") {
-
-        async function listBrewsOpenModal() {
-            const brews = await listBrews(maxRecords = 6);
-
-            // Load template modal view
-            let listBrewsBlocks = JSON.parse(fs.readFileSync("./blocks/listBrews.json"));
-
-            // Populate modal template with data from airtable
-
-            listBrewsBlocks.title.text = "Recent Brews";
-
-            listBrewsBlocks.blocks[0].text.text = `*${brews.records[0].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[1].elements[0].text = `Brewed on ${brews.records[0].fields["Brew Date"]}`;
-
-            listBrewsBlocks.blocks[2].text.text = `*${brews.records[1].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[3].elements[0].text = `Brewed on ${brews.records[1].fields["Brew Date"]}`;
-
-            listBrewsBlocks.blocks[4].text.text = `*${brews.records[2].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[5].elements[0].text = `Brewed on ${brews.records[2].fields["Brew Date"]}`;
-
-            listBrewsBlocks.blocks[6].text.text = `*${brews.records[3].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[7].elements[0].text = `Brewed on ${brews.records[3].fields["Brew Date"]}`;
-
-            listBrewsBlocks.blocks[8].text.text = `*${brews.records[4].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[9].elements[0].text = `Brewed on ${brews.records[4].fields["Brew Date"]}`;
-
-            listBrewsBlocks.blocks[10].text.text = `*${brews.records[5].fields["Brew Code"]}*`;
-            listBrewsBlocks.blocks[11].elements[0].text = `Brewed on ${brews.records[5].fields["Brew Date"]}`;
-
-            // Open modal in Slack
-            const modal = openModal(trigger_id = action.trigger_id, view = listBrewsBlocks);
-        };
-
-        listBrewsOpenModal();
-    }
-
     // The "Refresh" button was clicked on the App Home View
-    else if ((action.actions[0].action_id == "refresh-bottle-inventory-button")) {
+    if (action.actions[0].action_id == "refresh-bottle-inventory-button") {
 
         // Load template app home view
         let AppHomeView = JSON.parse(fs.readFileSync("./blocks/appHome.json"));
-
+        
         let current_datetime = new Date()
         let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
         let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
         AppHomeView.blocks[3].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> & <https://airtable.com/${airtableBase}|Airtable> on *${formatted_date}*_`
+        
+        async function gatherData() {
 
-        async function listSquareBottleInventory() {
+            //
+            // BOTTLE SHOP
+            //
+
             const bottleInventoryList = await listBottles();
 
             bottles = JSON.parse(bottleVariations);
@@ -141,11 +104,34 @@ app.post("/action", function (req, res) {
                 })
             });
 
-            updateAppHome(action.user.id, AppHomeView);
+            //
+            // MERCH
+            //
+
+            //
+            // RECENT BREWS
+            //
+
+            const brews = await listBrews(maxRecords = 6);
+
+            brews.records.forEach(brew => {
+                AppHomeView.blocks[12].fields.push({
+                    "type": "mrkdwn",
+                    "text": `*<${brew.fields["Brewing Record"]}|${brew.fields["Brew Code"]}>* _(brewed on ${new Date(brew.fields["Brew Date"]).toLocaleString('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric' })})_`
+                })
+            });
+
+            //
+            // PUBLISH
+            //
+
+            console.log(await updateAppHome(action.user.id, AppHomeView));
         };
 
-        listSquareBottleInventory();
+        gatherData();
 
+    } else {
+        return
     }
 });
 
@@ -157,14 +143,36 @@ app.post("/debug", function (req, res) {
     // Parse the payload
     // console.log(req.body);
 
-    // Load template app home view
-    let AppHomeView = JSON.parse(fs.readFileSync("./blocks/appHome.json"));
-
     let current_datetime = new Date()
     let options = { timeZone: 'America/Toronto', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
     let formatted_date = current_datetime.toLocaleString('en-CA', options);
 
-    AppHomeView.blocks[3].text.text = `_Last updated from <https://squareup.com/dashboard/|Square> & <https://airtable.com/${airtableBase}|Airtable> on *${formatted_date}*_`
+    AppHomeView = {
+        "type": "home",
+        "callback_id": "brewery-manager-app-home=debug",
+        "blocks": [
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "action_id": "refresh-bottle-inventory-button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": ":zap: Refresh"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": `_Last updated on *${formatted_date}*_`
+                }
+            }
+        ]
+    }
 
     const userIds = process.env.IDS;
     let users = userIds.split(",");
