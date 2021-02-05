@@ -117,50 +117,6 @@ app.post("/action", function (req, res) {
         listBrewsOpenModal();
     }
 
-    // The "Tap lineup" button was clicked on the App Home View
-    else if ((action.actions[0].action_id == "tap-lineup-home-button")) {
-
-        async function listTapsOpenModal() {
-            const taps = await listTaps();
-
-            // Load template modal view
-            let listBrewsBlocks = JSON.parse(fs.readFileSync("./blocks/listTaps.json"));
-
-            // Populate modal template with data from airtable
-
-            listBrewsBlocks.title.text = "Tap Lineup";
-
-            taps.records.forEach((tap, num) => {
-
-                listBrewsBlocks.blocks.push(
-                    {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": `\`${num + 1}.\` *${tap.fields["Brew Code"]}*`
-                        }
-                    },
-                    {
-                        "type": "context",
-                        "elements": [
-                            {
-                                "type": "mrkdwn",
-                                "text": `Tapped on ${tap.fields["Tapped Date"]}`
-                            }
-                        ]
-                    }
-                )
-
-            });
-
-            // Open modal in Slack
-            const modal = openModal(trigger_id = action.trigger_id, view = listBrewsBlocks);
-        };
-
-        listTapsOpenModal();
-
-    }
-
     // The "Refresh" button was clicked on the App Home View
     else if ((action.actions[0].action_id == "refresh-bottle-inventory-button")) {
 
