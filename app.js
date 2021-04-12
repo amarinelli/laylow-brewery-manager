@@ -139,7 +139,7 @@ app.post("/action", function (req, res) {
             // PUBLISH
             //
 
-            console.log(await updateAppHome(action.user.id, AppHomeView));
+            updateAppHome(action.user.id, AppHomeView);
         };
 
         gatherData();
