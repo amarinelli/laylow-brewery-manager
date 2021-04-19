@@ -21,8 +21,12 @@ function updateAppHome(user_id, view) {
             }
         })
         .then(response => {
-            // console.log(`App Home Updated for ${user_id}`);
-            resolve(response.data);
+            if (response.data.ok) {
+                // console.log(`App Home Updated for ${user_id}`);
+                resolve(response.data);
+            } else {
+                console.log(`${response.data.error}: ${response.data.response_metadata.messages[0]}`);
+            }
         })
         .catch(error => {
             console.log(error.response);
