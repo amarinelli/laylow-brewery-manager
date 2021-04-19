@@ -1,3 +1,6 @@
+//Import debugger
+require('@google-cloud/debug-agent').start({ serviceContext: { enableCanary: false } });
+
 // Import modules
 const express = require("express");
 const bodyParser = require("body-parser");
