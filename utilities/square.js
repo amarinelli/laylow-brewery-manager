@@ -11,6 +11,7 @@ function listInventory(type) {
 
     return new Promise(resolve => {
 
+        //TODO don't return items that have been returned
         axios.post("https://connect.squareup.com/v2/inventory/batch-retrieve-counts", {
             "catalog_object_ids": Object.keys(JSON.parse(type))
         }, {

@@ -99,10 +99,13 @@ app.post("/action", function (req, res) {
             bottles = JSON.parse(bottleVariations);
 
             bottleInventoryList.counts.forEach(item => {
-                AppHomeView.blocks[5].fields.push({
-                    "type": "mrkdwn",
-                    "text": `*${bottles[item.catalog_object_id]}*: ${item.quantity}`
-                })
+                // If a transaction in Square is returned, it will be listed in the item count response 
+                if (item.state != "RETURNED_BY_CUSTOMER") {
+                    AppHomeView.blocks[5].fields.push({
+                        "type": "mrkdwn",
+                        "text": `*${bottles[item.catalog_object_id]}*: ${item.quantity}`
+                    })
+                }
             });
 
             //
