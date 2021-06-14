@@ -13,7 +13,7 @@ function updateAppHome(user_id, view) {
         // console.log(JSON.stringify(view, null, 2));
 
         axios.post("https://slack.com/api/views.publish", {
-            user_id, user_id,
+            user_id: user_id,
             view: view
         }, {
             headers: {
