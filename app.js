@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const fs = require("fs");
 
-const { updateAppHome } = require("./utilities/slack.js");
+const { updateAppHome, sendLogMessage } = require("./utilities/slack.js");
 const { listBrews } = require("./utilities/airtable.js");
 const { listInventory } = require("./utilities/square.js");
 
@@ -13,6 +13,7 @@ dotenv.config();
 const bottleVariations = process.env.BOTTLES;
 const merchVariations = process.env.MERCH;
 const airtableBase = process.env.AIRTABLE_BASE;
+const logChannel = process.env.LOG_CHANNEL;
 
 var app = express();
 
@@ -143,6 +144,7 @@ app.post("/action", function (req, res) {
             //
 
             updateAppHome(action.user.id, AppHomeView);
+            sendLogMessage(logChannel, `\`refresh-bottle-inventory-button\` used by <@${action.user.id}>`)
         };
 
         gatherData();

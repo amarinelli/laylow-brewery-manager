@@ -36,4 +36,31 @@ function updateAppHome(user_id, view) {
     });
 }
 
-module.exports = { updateAppHome };
+function sendLogMessage(channel, text) {
+
+    return new Promise(resolve => {
+
+        axios.post("https://slack.com/api/chat.postMessage", {
+            channel: channel,
+            text: text
+        }, {
+            headers: {
+                "Authorization": `Bearer ${botToken}`,
+                "Content-Type": "application/json; charset=utf-8"
+            }
+        })
+        .then(response => {
+            if (response.data.ok) {
+                resolve(response.data);
+            } else {
+                console.log(`${response.data.error}`);
+            }
+        })
+        .catch(error => {
+            console.log(error.response);
+            resolve(error.response);
+        });
+    });
+}
+
+module.exports = { updateAppHome, sendLogMessage };
