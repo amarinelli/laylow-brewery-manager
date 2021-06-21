@@ -14,6 +14,8 @@ const bottleVariations = process.env.BOTTLES;
 const merchVariations = process.env.MERCH;
 const airtableBase = process.env.AIRTABLE_BASE;
 const logChannel = process.env.LOG_CHANNEL;
+const logMentionExcludeId = process.env.LOG_MENTION_EXCLUDE_ID;
+const logMentionExcludeName = process.env.LOG_MENTION_EXCLUDE_NAME;
 
 var app = express();
 
@@ -144,7 +146,8 @@ app.post("/action", function (req, res) {
             //
 
             updateAppHome(action.user.id, AppHomeView);
-            sendLogMessage(logChannel, `\`refresh-bottle-inventory-button\` used by <@${action.user.id}>`)
+            action.user.id == logMentionExcludeId ? mentionUser = logMentionExcludeName : mentionUser = action.user.id // Don't send log with self-mentions
+            sendLogMessage(logChannel, `\`refresh-bottle-inventory-button\` used by <@${mentionUser}>`)
         };
 
         gatherData();
